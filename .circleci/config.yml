@@ -106,6 +106,7 @@ jobs:
   deploy-infrastructure:
     docker:
       # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli:latest
     steps:
       # Checkout code from git
       - run:
@@ -176,6 +177,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli:latest
     steps:
       # Checkout code from git
       - run:
@@ -236,8 +238,8 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: circleci/node:13.8.0
       # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli:latest
     steps:
       # Checkout code from git
       - run:
