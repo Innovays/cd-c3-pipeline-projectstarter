@@ -18,10 +18,10 @@ commands:
           when: << parameters.workflow_id >>
           command: |
             # Your code here
-            echo "Destroy environment: << parameters.workflow_id >> "
-            aws s3 rm s3://<< parameters.repository >>-<< parameters.workflow_id >> -- recursive
-            aws cloudformation delete-stack --stack-name << parameters.repository >>-frontend-<< parameters.workflow_id >>
-            aws cloudformation delete-stack --stack-name << parameters.repository >>-backend-<< parameters.workflow_id >>
+            echo "Destroy environment: << repository >> "
+            aws s3 rm s3://<< parameters.repository >> -- recursive
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
             # exit 1
 
   revert-migrations:
