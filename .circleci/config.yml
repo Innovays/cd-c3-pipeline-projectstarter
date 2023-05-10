@@ -19,9 +19,9 @@ commands:
           command: |
             # Your code here
             echo "Destroy environment: << parameters.workflow_id >> "
-            aws s3 rm s3://<< repository >>-<< parameters.workflow_id >> -- recursive
-            aws cloudformation delete-stack --stack-name << repository >>-frontend-<< parameters.workflow_id >>
-            aws cloudformation delete-stack --stack-name << repository >>-backend-<< parameters.workflow_id >>
+            aws s3 rm s3://<< parameters.repository >>-<< parameters.workflow_id >> -- recursive
+            aws cloudformation delete-stack --stack-name << parameters.repository >>-frontend-<< parameters.workflow_id >>
+            aws cloudformation delete-stack --stack-name << parameters.repository >>-backend-<< parameters.workflow_id >>
             # exit 1
 
   revert-migrations:
@@ -190,7 +190,7 @@ jobs:
                   --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                   --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                   --tags project=udapeople
-              exit 1
+              #exit 1
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -211,12 +211,6 @@ jobs:
           paths:
             - .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
-      - run:
-          name: Rollback on failure
-          when: on_fail
-          command: |
-            circleci-agent step halt
-            circleci commands destroy-environment --workflow_id ${CIRCLE_WORKFLOW_ID:0:7}
 
 
   configure-infrastructure:
@@ -231,8 +225,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # Your code here
-            exit 1
+            steps:
+              - checkout
+              - add_ssh_keys:
+                  fingerprints:
+                    - ${SSH_FINGERPRINT}
+           # exit 1
       - run:
           name: Configure server
           command: |
