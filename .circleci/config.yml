@@ -1,5 +1,12 @@
 version: 2.1
 
+orbs:
+  # Choose either one of the orbs below
+  # Declare a dependency on the welcome-orb
+  # welcome: circleci/welcome-orb@0.4.1
+  aws-cli: circleci/aws-cli@2.0.3
+# Orchestrate or schedule a set of jobs
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -238,7 +245,7 @@ jobs:
           name: Configure server
           command: |
             # Your code here
-            cd ansible
+            cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
             exit 1
       # Here's where you will add some code to rollback on failure    
