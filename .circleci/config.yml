@@ -204,14 +204,17 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             instance_ip=$(aws ec2 describe-instances --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
-            echo "$instance_ip" >> .circleci/ansible/inventory.txt
+            echo "$instance_ip" > .circleci/ansible/inventory.txt
 
       - persist_to_workspace:
           root: ~/
           paths:
             - .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
-
+      - run: 
+          name: Remove back-end ip from ansible inventory  
+          command: |
+            rm .circleci/ansible/inventory.txt  
 
   configure-infrastructure:
     docker:
@@ -235,8 +238,14 @@ jobs:
           name: Configure server
           command: |
             # Your code here
+            cd ansible
+            ansible-playbook configure-server.yml
             exit 1
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure    
+      - run: 
+          name: Remove back-end ip from ansible inventory  
+          command: |
+            rm .circleci/ansible/inventory.txt  
 
   run-migrations:
     docker:
