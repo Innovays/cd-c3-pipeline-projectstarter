@@ -15,7 +15,7 @@ commands:
     steps:
       - run:
           name: Destroy environments
-          when: << parameters.workflow_id >>
+          when: on_fail # << parameters.workflow_id >>
           command: |
             # Your code here
             echo "Destroy environment: << repository >> "
@@ -245,7 +245,7 @@ jobs:
       - run: 
           name: Remove back-end ip from ansible inventory  
           command: |
-            rm .circleci/ansible/inventory.txt  
+            rm ~/project/.circleci/ansible/inventory.txt  
 
   run-migrations:
     docker:
