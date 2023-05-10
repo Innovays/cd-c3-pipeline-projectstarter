@@ -11,6 +11,7 @@ commands:
         type: string
       repository:
         type: string
+        default: udapeople-hdsfheiuwskjdhue
     steps:
       - run:
           name: Destroy environments
@@ -18,7 +19,7 @@ commands:
           command: |
             # Your code here
             echo "Destroy environment: << parameters.workflow_id >> "
-            aws s3 rm s3://<< repository >><< parameters.workflow_id >> -- recursive
+            aws s3 rm s3://<< repository >>-<< parameters.workflow_id >> -- recursive
             aws cloudformation delete-stack --stack-name << repository >>-frontend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name << repository >>-backend-<< parameters.workflow_id >>
             # exit 1
@@ -367,7 +368,6 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
-      - cleanup
       - test-frontend:
           requires: [build-frontend]
       - test-backend:
@@ -377,7 +377,7 @@ workflows:
       - scan-frontend:
           requires: [build-frontend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend, build-frontend, build-backend]
           filters:
             branches:
               only: [test-feature-branch]
@@ -394,4 +394,4 @@ workflows:
       - cloudfront-update:
           requires: [smoke-test]
       - cleanup:
-          requires: [cloudfront-update, build-backend, build-frontend]
+          requires: [cloudfront-update]
