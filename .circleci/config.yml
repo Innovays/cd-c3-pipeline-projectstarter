@@ -219,21 +219,21 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: ansible/ansible:latest
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
       - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints:
+            - ${SSH_FINGERPRINT}      
       - run:
           name: Install dependencies
           command: |
-            steps:
-              - checkout
-              - add_ssh_keys:
-                  fingerprints:
-                    - ${SSH_FINGERPRINT}
+            # install the dependencies needed for your playbook
+            apk add --update ansible              
            # exit 1
+      # attach workspace
       - run:
           name: Configure server
           command: |
