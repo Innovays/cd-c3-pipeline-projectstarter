@@ -209,12 +209,12 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - /project/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
       - run: 
           name: Remove back-end ip from ansible inventory  
           command: |
-            rm /project/.circleci/ansible/inventory.txt  
+            rm ~/project/.circleci/ansible/inventory.txt  
 
   configure-infrastructure:
     docker:
