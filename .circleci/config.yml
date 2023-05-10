@@ -180,8 +180,8 @@ jobs:
       - run: # 5. 1.a. Create the Infrastructure - install tar and gzip
           name: install dependencies # gzip and tar
           command: |
-              apk update
-              apk add tar gzip 
+              apt-get update
+              apt-get install tar gzip -y
       - run:
           name: Ensure back-end infrastructure exists
           command: |
