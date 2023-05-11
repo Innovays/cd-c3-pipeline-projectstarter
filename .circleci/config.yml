@@ -252,7 +252,7 @@ jobs:
           command: |
             # Your code here
             cd ~/project/.circleci/ansible
-            ansible-playbook -i inventory.txt playbook.yml
+            ansible-playbook -i inventory.txt configure-server.yml
             # exit 1
       # Here's where you will add some code to rollback on failure    
       - destroy-environment
@@ -267,6 +267,7 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
+
             exit 1
       - run:
           name: Send migration results to memstash
@@ -307,6 +308,8 @@ jobs:
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
