@@ -28,11 +28,7 @@
   wait_for_connection:
     
   roles:
-      - role: weareinteractive.environment
-        become: true
-      - role: configure-server
-        become: true
-      - role: deploy
-        become: true
-      - role: configure_prometheus-node-exporter
-        become: true
+      - weareinteractive.environment
+      - configure-server
+      - deploy
+      - configure_prometheus-node-exporter
