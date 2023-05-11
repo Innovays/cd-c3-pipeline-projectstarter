@@ -29,7 +29,6 @@
       timeout: 600
     
   roles:
-      - weareinteractive.environment
       - configure-server
       - deploy
       - configure_prometheus-node-exporter
