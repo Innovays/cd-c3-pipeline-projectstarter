@@ -227,7 +227,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: circleci/python:3.8 #python:3.7-alpine3.11
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -239,7 +239,7 @@ jobs:
           name: Install dependencies
           command: |
             # install the dependencies needed for your playbook
-            yum -install -y ansible          
+             apk add -update ansible          
            # exit 1
       # attach workspace
       - run:
@@ -250,7 +250,7 @@ jobs:
             ansible-playbook -i inventory.txt playbook.yml
             exit 1
       # Here's where you will add some code to rollback on failure    
-      - destroy-environment
+      #- destroy-environment
 
   run-migrations:
     docker:
