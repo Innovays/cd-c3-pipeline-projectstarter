@@ -27,7 +27,6 @@ commands:
           when: << parameters.event >> # << parameters.workflow_id >>
           command: |
             # Your code here
-            yum install -y awscli
             echo "Destroy environment: << parameters.workflow_id >> "
             aws s3 rm s3://<< parameters.repository >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
