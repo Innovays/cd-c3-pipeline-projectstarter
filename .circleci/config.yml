@@ -239,7 +239,7 @@ jobs:
           name: Install dependencies
           command: |
             # install the dependencies needed for your playbook
-            apk add --update ansible             
+            yum -install -y ansible          
            # exit 1
       # attach workspace
       - run:
@@ -250,7 +250,7 @@ jobs:
             ansible-playbook -i inventory.txt playbook.yml
             exit 1
       # Here's where you will add some code to rollback on failure    
-      #- destroy-environment
+      - destroy-environment
 
   run-migrations:
     docker:
