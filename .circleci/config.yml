@@ -255,15 +255,14 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:latest
         user: root
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            apt-get update
-            apt -y install awscli
+            apt-get update && apt-get upgrade && apt -y install awscli
       - run:
           name: Run migrations
           command: |
