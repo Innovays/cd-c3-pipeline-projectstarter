@@ -216,7 +216,7 @@ jobs:
           command: |
             instance_ip=$(aws ec2 describe-instances --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
             echo "$instance_ip" >> ~/project/.circleci/ansible/inventory.txt 
-            echo "Instance IP: $instance_ip\n"
+            echo "Instance IP: $instance_ip"
             echo "Inventory file output:"
             cat ~/project/.circleci/ansible/inventory.txt
 
@@ -251,7 +251,7 @@ jobs:
             # Your code here
             cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt playbook.yml
-            exit 1
+            # exit 1
       # Here's where you will add some code to rollback on failure    
       #- destroy-environment
 
