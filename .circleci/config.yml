@@ -36,23 +36,18 @@ commands:
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
-    parameters:
-      # Add parameter here     
-      event: 
-        type: string # todo
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
-            if(( $SUCCESS==1 )); 
+            SUCCESS=$(curl https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=$(ACCESS_TOKEN))
+
+            if [ ${SUCCESS} = "1" ];
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              cd ~/project/backend
+              npm i
+              npm run migrations:revert
             fi
             
 jobs:
@@ -283,8 +278,8 @@ jobs:
               curl https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=$(ACCESS_TOKEN) -d "0"
             fi
       - destroy-environment
- 
-   deploy-frontend:
+
+    deploy-frontend:
     docker:
       - image: circleci/node:13.8.0
         user: root
