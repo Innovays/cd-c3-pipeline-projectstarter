@@ -27,6 +27,7 @@ commands:
           when: << parameters.event >> # << parameters.workflow_id >>
           command: |
             # Your code here
+            yum install -y awscli
             echo "Destroy environment: << parameters.workflow_id >> "
             aws s3 rm s3://<< parameters.repository >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
@@ -238,7 +239,7 @@ jobs:
           name: Install dependencies
           command: |
             # install the dependencies needed for your playbook
-            apk add --update ansible awscli             
+            apk add --update ansible             
            # exit 1
       # attach workspace
       - run:
@@ -249,7 +250,7 @@ jobs:
             ansible-playbook -i inventory.txt playbook.yml
             exit 1
       # Here's where you will add some code to rollback on failure    
-      - destroy-environment
+      #- destroy-environment
 
   run-migrations:
     docker:
