@@ -118,13 +118,13 @@ jobs:
       - image: cimg/node:13.8.0 # circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      # - restore_cache:
+      #     keys: [frontend-build]
       - npm-prepare:
           path: frontend
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
+      # - save_cache:
+      #     paths: [frontend/node_modules]
+      #     key: frontend-build
 
       - run: 
           name: clean on fail
@@ -162,8 +162,8 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      # - restore_cache:
+      #     keys: [frontend-build]
       - npm-prepare:
           path: frontend
                 
@@ -190,8 +190,8 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      # - restore_cache:
+      #     keys: [frontend-build]
       - npm-prepare:
           path: frontend
 
