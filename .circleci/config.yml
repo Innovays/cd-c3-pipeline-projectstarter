@@ -64,7 +64,7 @@ commands:
   #     - save_cache:
   #         paths:
   #           - node_modules
-  #         key: v1-dependencies-{{ checksum "package.json" }}
+  #         key: v1-dependencies-{{ checksum "package.json" }} #test
     
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
