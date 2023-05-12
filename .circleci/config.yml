@@ -294,7 +294,7 @@ jobs:
             cd ~/project/backend
             MIGRATIONS_OUTPUT=$(npm run migrations)
       - run:
-          name: Send migration results to memstash
+          name: Send migration results to kvdb
           command: |
             echo ${MIGRATIONS_OUTPUT}
             if grep -q "has been executed successfully" ${MIGRATIONS_OUTPUT}; then
