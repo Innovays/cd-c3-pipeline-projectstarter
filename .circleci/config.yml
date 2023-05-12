@@ -39,7 +39,8 @@ commands:
             - ~/project/<< parameters.path >>/package-lock.json
             - ~/project/<< parameters.path >>/node_modules
             - ~/project/<< parameters.path >>/package.json
-          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
+          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+
       - persist_to_workspace:
           root: ~/
           paths:
