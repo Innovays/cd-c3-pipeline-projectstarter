@@ -88,7 +88,9 @@ commands:
             aws s3 rm s3://<< parameters.repository >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
-            rm ~/project/.circleci/ansible/inventory.txt  
+            rm ~/project/.circleci/ansible/inventory.txt
+            rm ~/project/frontend/package-lock.json  
+            rm ~/project/backend/package-lock.json  
             # exit 1
 
   revert-migrations:
