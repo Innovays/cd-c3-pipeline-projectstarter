@@ -29,10 +29,6 @@ commands:
             if [ ! -d "node_modules" ]; then
               npm update && npm upgrade
               npm install
-              npm audit --audit-level=critical || (npm audit fix && npm audit fix --audit-level=critical --all --force && npm audit --audit-level=critical)
-            else 
-              npm audit --audit-level=critical || (npm update && npm upgrade  && npm ci && npm audit fix && npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
-              #npm audit --audit-level=critical || ( npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
             fi
       - save_cache:
           paths:
@@ -169,6 +165,10 @@ jobs:
       #     keys: [frontend-build]
       - npm-prepare:
           path: frontend
+      - run:
+          command: |
+            cd backend
+            npm run test
                 
   test-backend:
     docker:
@@ -181,6 +181,10 @@ jobs:
       - checkout
       - npm-prepare:
           path: backend
+      - run:
+          command: |
+            cd backend
+            npm run test
             
   scan-frontend:
     docker:
@@ -195,7 +199,9 @@ jobs:
       #     keys: [frontend-build]
       - npm-prepare:
           path: frontend
-
+      - run: 
+          command: |
+            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
 
   scan-backend:
     docker:
@@ -208,6 +214,9 @@ jobs:
       - checkout
       - npm-prepare:
           path: backend
+      - run: 
+          command: |
+            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
 
 
   deploy-infrastructure:
