@@ -293,12 +293,12 @@ jobs:
         - run:
             name: Set env variables
             command: | 
-              BACKEND_IP=$(grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' .circleci/ansible/inventory.txt)
+              BACKEND_IP=$(grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' ~/project/.circleci/ansible/inventory.txt)
               export API_URL="http://${BACKEND_IP}:3030"
               echo "${API_URL}"
-              echo API_URL=$API_URL >> "frontend/.env"
-              echo ENVIRONMENT=production  >> "frontend/.env"
-              echo NODE_ENV=production >> "frontend/.env"
+              echo API_URL=$API_URL >> ~/project/frontend/.env
+              echo ENVIRONMENT=production  >> ~/project/frontend/.env
+              echo NODE_ENV=production >> ~/project/frontend/.env
         - run:
             name: Build frontend objects
             command: |
