@@ -282,15 +282,14 @@ jobs:
 
   deploy-frontend:
       docker:
-        - image: circleci/node:13.8.0
+        - image: circleci/node:latest
           user: root
       steps:
         - checkout
         - run:
             name: Install dependencies
             command: |
-              sudo apt-get update
-              sudo apt -y install awscli
+              sudo apt-get update && sudo apt-get upgrade && apt-get -y install awscli
         - run:
             name: Set env variables
             command: | 
