@@ -236,10 +236,10 @@ jobs:
             npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
       - save_cache:
           paths:
-            - ~/project/<< parameters.path >>/package-lock.json
-            - ~/project/<< parameters.path >>/node_modules
-            - ~/project/<< parameters.path >>/package.json
-          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+            - ~/project/backend/package-lock.json
+            - ~/project/backend/node_modules
+            - ~/project/backend/package.json
+          key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
 
   deploy-infrastructure:
     docker:
