@@ -26,7 +26,7 @@ commands:
             if [ ! -d "node_modules" ]; then
               npm update && npm upgrade
               npm install
-              npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all --force && npm audit --audit-level=critical)#
+              npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all --force && npm audit --audit-level=critical)
             else
               #npm audit --audit-level=critical || (npm update && npm upgrade  && npm ci && npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
               npm audit --audit-level=critical || ( npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
@@ -126,6 +126,11 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - run: 
+          name: clean on fail
+          when: on_fail
+          command: |
+           rm ~/project/frontend/package-lock.json
 
   build-backend:
     docker:
@@ -140,6 +145,14 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
+      - run: 
+          name: clean on fail
+          when: on_fail
+          command: |
+           rm ~/project/backend/package-lock.json
 
   test-frontend:
     docker:
