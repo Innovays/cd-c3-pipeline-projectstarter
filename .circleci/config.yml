@@ -26,7 +26,9 @@ commands:
             if [ ! -d "node_modules" ]; then
               npm update && npm upgrade
               npm install
-              (npm audit --audit-level=critical || npm audit fix) || (npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit --audit-level=critical))
+              npm audit --audit-level=critical || npm audit fix --audit-level=critical --force
+            else
+              npm audit --audit-level=critical || (npm update && npm upgrade && npm install && npm audit fix --audit-level=critical --force)
             fi
       - save_cache:
           paths:
