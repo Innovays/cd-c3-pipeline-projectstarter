@@ -290,6 +290,8 @@ jobs:
             name: Install dependencies
             command: |
               sudo apt-get update && sudo apt-get upgrade && apt-get -y install awscli
+        - attach_workspace:
+            at: ~/project/
         - run:
             name: Set env variables
             command: | 
