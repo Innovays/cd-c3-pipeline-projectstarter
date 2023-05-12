@@ -23,9 +23,11 @@ commands:
           name: Prepare npm
           command: |
             cd << parameters.path >>
-            npm update && npm upgrade
-            npm install
-            (npm audit --audit-level=critical || npm audit fix) || (npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit --audit-level=critical))
+            if [ ! -d "node_modules" ]; then
+              npm update && npm upgrade
+              npm install
+              (npm audit --audit-level=critical || npm audit fix) || (npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit --audit-level=critical))
+            fi
       - save_cache:
           paths:
             - node_modules
