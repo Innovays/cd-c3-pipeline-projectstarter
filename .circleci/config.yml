@@ -118,14 +118,8 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: 
-          name: Run frontend test
-          command: |
-             cd frontend
-             npm update && npm upgrade && npm install
-             npm audit fix
-             #npm audit fix --audit-level=critical --force
-             npm audit --audit-level=critical
+      - npm-prepare:
+          path: frontend
                 
   test-backend:
     docker:
@@ -138,15 +132,8 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run: 
-          name: Run backend test
-          command: |
-            cd backend
-            npm update && npm upgrade && npm install
-            npm audit fix
-            #npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
-            npm run test
+      - npm-prepare:
+          path: backend
             
   scan-frontend:
     docker:
