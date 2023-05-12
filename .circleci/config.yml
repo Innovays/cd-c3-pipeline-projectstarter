@@ -294,7 +294,7 @@ jobs:
         - run:
             name: Set env variables
             command: | 
-              echo "BACKEND-IP: " && export BACKEND_IP=$(grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' ~/project/.circleci/ansible/inventory.txt) &&
+              export BACKEND_IP=$(grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' ~/project/.circleci/ansible/inventory.txt) &&
               export API_URL="http://${BACKEND_IP}:3030" &&
               echo ${API_URL} >> ~/project/frontend/.env &&
               cat ~/project/frontend/.env &&
@@ -305,7 +305,10 @@ jobs:
             command: |
               cd ~/project/frontend
               npm update
-              npm install
+              npm install 
+              npm audit fix --audit-level=critical --force # workaround
+              npm audit fix --force # workaround
+              npm audit --audit-level=critical # workaround
               npm run build
               tar -czvf artifact.tar.gz dist
               mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
