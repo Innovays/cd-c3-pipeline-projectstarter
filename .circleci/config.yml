@@ -30,12 +30,12 @@ commands:
               npm update && npm upgrade
               npm install
             fi
-      - save_cache:
-          paths:
-            - ~/project/<< parameters.path >>/package-lock.json
-            - ~/project/<< parameters.path >>/node_modules
-            - ~/project/<< parameters.path >>/package.json
-          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+      # - save_cache:
+      #     paths:
+      #       - ~/project/<< parameters.path >>/package-lock.json
+      #       - ~/project/<< parameters.path >>/node_modules
+      #       - ~/project/<< parameters.path >>/package.json
+      #     key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
 
       - persist_to_workspace:
           root: ~/
@@ -145,6 +145,12 @@ jobs:
       - checkout
       - npm-prepare:
           path: backend
+      - save_cache:
+          paths:
+            - ~/project/<< parameters.path >>/package-lock.json
+            - ~/project/<< parameters.path >>/node_modules
+            - ~/project/<< parameters.path >>/package.json
+          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
       - run: 
           name: clean on fail
           when: on_fail
@@ -202,6 +208,12 @@ jobs:
       - run: 
           command: |
             npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
+      - save_cache:
+          paths:
+            - ~/project/<< parameters.path >>/package-lock.json
+            - ~/project/<< parameters.path >>/node_modules
+            - ~/project/<< parameters.path >>/package.json
+          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
 
   scan-backend:
     docker:
@@ -217,7 +229,12 @@ jobs:
       - run: 
           command: |
             npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
-
+      - save_cache:
+          paths:
+            - ~/project/<< parameters.path >>/package-lock.json
+            - ~/project/<< parameters.path >>/node_modules
+            - ~/project/<< parameters.path >>/package.json
+          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
 
   deploy-infrastructure:
     docker:
