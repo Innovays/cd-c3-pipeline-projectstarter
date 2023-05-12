@@ -83,12 +83,10 @@ jobs:
           command: |
              # Your code here
              cd backend
-             npm install
-             npm audit fix --audit-level=critical --force
-             ## If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
-             #npm audit fix --force
-             #npm audit --audit-level=critical
-             npm run build
+             npm update && npm upgrade && npm install
+             npm audit fix
+             #npm audit fix --audit-level=critical --force
+             npm audit --audit-level=critical
 
       - save_cache:
           paths: [backend/node_modules]
@@ -157,12 +155,8 @@ jobs:
           command: |  
             cd frontend
             npm update && npm upgrade && npm install
-            ## npm install oauth-sign@^0.9.0
             npm audit fix
-            npm audit --audit-level=critical
-            npm audit fix --audit-level=critical --force
-            ## If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
-            #npm audit fix --force
+            #npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
 
   scan-backend:
@@ -181,12 +175,10 @@ jobs:
           name: Run backend test
           command: |   
             cd backend
-            npm install
-            ## npm install oauth-sign@^0.9.0
-            npm audit fix --audit-level=critical --force
-            ## If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
-            #npm audit fix --force
-            #npm audit --audit-level=critical    
+            npm update && npm upgrade && npm install
+            npm audit fix
+            #npm audit fix --audit-level=critical --force
+            npm audit --audit-level=critical
 
   deploy-infrastructure:
     docker:
