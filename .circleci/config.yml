@@ -306,9 +306,11 @@ jobs:
               cd ~/project/frontend
               npm update
               npm install 
-              npm audit fix --force
+              echo "Installed!"
+              npm update && npm audit fix 
+              echo "Fixed!"
               # npm audit fix --audit-level=critical --force # workaround
-              npm audit fix --force # workaround
+              # npm audit fix --force # workaround
               #npm audit --audit-level=critical # workaround
               npm run build
               tar -czvf artifact.tar.gz dist
