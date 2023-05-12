@@ -87,9 +87,9 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run:
-          name: Build front-end
-          command: npm-prepare frontend
+      - npm-prepare:
+          path: frontend
+
 
       - save_cache:
           paths: [frontend/node_modules]
@@ -102,15 +102,8 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run:
-          name: Back-end build
-          command: |
-             # Your code here
-             cd backend
-             npm update && npm upgrade && npm install
-             npm audit fix
-             #npm audit fix --audit-level=critical --force
-             npm audit --audit-level=critical
+      - npm-prepare:
+          path: backend
 
       - save_cache:
           paths: [backend/node_modules]
@@ -168,17 +161,14 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run: 
-          name: Run frontend test
-          command: |
-            npm-prepare:
-              path: frontend
+      - npm-prepare:
+          path: frontend
+
 
   scan-backend:
     docker:
       # Docker image here
       - image: cimg/node:13.8.0 # circleci/node:13.8.0 #?
-
     steps:
       # Checkout code from git
       # Restore from cache
@@ -186,11 +176,9 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run: 
-          name: Run backend test
-          command: |
-            npm-prepare:
-              path: backend
+      - npm-prepare:
+          path: backend
+
 
   deploy-infrastructure:
     docker:
@@ -278,13 +266,12 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update && apt-get upgrade && apt -y install awscli
+      - npm-prepare:
+          path: backend
       - run:
           name: Run migrations
           command: |
-            npm-prepare:
-              path: backend 
             MIGRATIONS_OUTPUT=$(npm run migrations)
-
       - run:
           name: Send migration results to memstash
           command: |
@@ -317,11 +304,11 @@ jobs:
               cat ~/project/frontend/.env &&
               echo "ENVIRONMENT = production"  >> ~/project/frontend/.env &&
               echo "NODE_ENV = production" >> ~/project/frontend/.env
+        - npm-prepare:
+            path: frontend
         - run:
             name: Build frontend objects
             command: |
-              npm-prepare:
-                path: frontend
                 # cd ~/project/frontend
                 # npm update && npm upgrade
                 # npm install 
