@@ -102,7 +102,6 @@ commands:
             rm ~/project/.circleci/ansible/inventory.txt
             #rm ~/project/frontend/package-lock.json  
             #rm ~/project/backend/package-lock.json  
-            # exit 1
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
