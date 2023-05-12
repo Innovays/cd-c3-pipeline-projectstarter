@@ -8,6 +8,34 @@ orbs:
 # Orchestrate or schedule a set of jobs
 
 commands:
+  npm-prepare:
+    description: Update & Upgrade npm then run install and scan for vulnerabilities 
+    parameters: 
+      path: 
+        type: string
+        default: .
+    steps:
+      - run:
+          name: change to the directory
+          command: |
+            cd << parameters.path >>
+      - run:
+          name: Prepare npm
+          command: |
+            npm update && npm upgrade
+      - run:
+          name: install npm
+          command: |
+            npm install
+      - run:
+          name: scan for vulnerabilities
+          command: |
+            npm audit fix
+            #npm audit fix --audit-level=critical --force
+            npm audit --audit-level=critical
+
+    
+
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -62,12 +90,8 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            # Your code here
-            cd frontend
-            npm update && npm upgrade && npm install
-            npm audit fix
-            #npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
+            npm-prepare:
+              path: frontend
 
       - save_cache:
           paths: [frontend/node_modules]
@@ -147,13 +171,10 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run: 
-          name: Run backend test
-          command: |  
-            cd frontend
-            npm update && npm upgrade && npm install
-            npm audit fix
-            #npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
+          name: Run frontend test
+          command: |
+            npm-prepare:
+              path: frontend
 
   scan-backend:
     docker:
@@ -169,12 +190,9 @@ jobs:
           keys: [backend-build]
       - run: 
           name: Run backend test
-          command: |   
-            cd backend
-            npm update && npm upgrade && npm install
-            npm audit fix
-            #npm audit fix --audit-level=critical --force
-            npm audit --audit-level=critical
+          command: |
+            npm-prepare:
+              path: backend
 
   deploy-infrastructure:
     docker:
@@ -265,13 +283,10 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            cd backend
-            npm install
-            npm audit fix --audit-level=critical --force
-            ## If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
-            #npm audit fix --force
-            #npm audit --audit-level=critical
+            npm-prepare:
+              path: backend 
             MIGRATIONS_OUTPUT=$(npm run migrations)
+
       - run:
           name: Send migration results to memstash
           command: |
@@ -307,19 +322,21 @@ jobs:
         - run:
             name: Build frontend objects
             command: |
-              cd ~/project/frontend
-              npm update && npm upgrade
-              npm install 
-              echo "Installed!"
-              npm audit fix --audit-level=critical --force
-              echo "Fixed!"
-              # npm audit fix --audit-level=critical --force # workaround
-              # npm audit fix --force # workaround
-              #npm audit --audit-level=critical # workaround
-              npm run build
-              tar -czvf artifact.tar.gz dist
-              mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
-              aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+              npm-prepare:
+                path: frontend
+                # cd ~/project/frontend
+                # npm update && npm upgrade
+                # npm install 
+                # echo "Installed!"
+                # npm audit fix --audit-level=critical --force
+                # echo "Fixed!"
+                # # npm audit fix --audit-level=critical --force # workaround
+                # # npm audit fix --force # workaround
+                # #npm audit --audit-level=critical # workaround
+                npm run build
+                tar -czvf artifact.tar.gz dist
+                mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
+                aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
         - run:
             name: Deploy frontend objects
             command: |
