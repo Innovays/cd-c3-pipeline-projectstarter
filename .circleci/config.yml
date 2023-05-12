@@ -272,10 +272,9 @@ jobs:
             # install the dependencies needed for your playbook
              apk add --update ansible
              pip install awscli          
-      #      # exit 1
       # attach workspace
       - attach_workspace:
-          at: ~/
+          at: ~/project/.circleci/ansible
       - run:
           name: Configure server
           command: |
