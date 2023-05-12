@@ -278,6 +278,10 @@ jobs:
           name: Install dependencies
           command: |
             apt-get -y update && apt-get -y upgrade && apt -y install awscli
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          keys: [backend-build]
       - npm-prepare:
           path: backend
       - run:
@@ -411,6 +415,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
