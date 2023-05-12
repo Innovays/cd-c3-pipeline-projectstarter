@@ -147,14 +147,8 @@ jobs:
       - image: cimg/node:13.8.0 #circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - npm-prepare:
           path: backend
-
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
       - run: 
           name: clean on fail
           when: on_fail
@@ -185,8 +179,6 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - npm-prepare:
           path: backend
             
@@ -214,8 +206,6 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - npm-prepare:
           path: backend
 
@@ -308,8 +298,6 @@ jobs:
             apt-get -y update && apt-get -y upgrade && apt -y install awscli
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          keys: [backend-build]
       - npm-prepare:
           path: backend
       - run:
