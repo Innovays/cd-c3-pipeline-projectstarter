@@ -8,6 +8,7 @@ orbs:
 # Orchestrate or schedule a set of jobs
 
 commands:
+
   npm-prepare:
     description: Update & Upgrade npm then run install and scan for vulnerabilities 
     parameters: 
@@ -31,9 +32,11 @@ commands:
             cd << parameters.path >>
             npm audit fix
             npm audit --audit-level=critical || npm audit fix --audit-level=critical --force
-
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
     
-
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -60,7 +63,6 @@ commands:
             rm ~/project/.circleci/ansible/inventory.txt  
             # exit 1
 
-
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     steps:
@@ -76,6 +78,7 @@ commands:
               npm i
               npm run migrations:revert
             fi
+            
             
 jobs:
   build-frontend:
