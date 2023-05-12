@@ -37,7 +37,7 @@ commands:
           key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
       - save_cache:
           paths:
-            - node_modules
+            - ~/project/<< parameters.path/node_modules
           key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/node_modules" }}
 
   # npm-prepare:
