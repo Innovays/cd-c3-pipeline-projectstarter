@@ -29,7 +29,7 @@ commands:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
 
   # npm-prepare:
   #   description: Update & Upgrade npm then run install and scan for vulnerabilities 
