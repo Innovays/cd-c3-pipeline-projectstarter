@@ -304,10 +304,10 @@ jobs:
             name: Build frontend objects
             command: |
               cd ~/project/frontend
-              npm update
+              npm update && npm upgrade
               npm install 
               echo "Installed!"
-              npm update && npm audit fix 
+              npm audit fix --audit-level=critical --force
               echo "Fixed!"
               # npm audit fix --audit-level=critical --force # workaround
               # npm audit fix --force # workaround
