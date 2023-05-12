@@ -16,6 +16,9 @@ commands:
         type: string
         default: .
     steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: Prepare npm
           command: |
