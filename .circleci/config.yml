@@ -16,6 +16,8 @@ commands:
         type: string
         default: .
     steps:
+      - attach_workspace:
+          at: ~/project/<< parameters.path >>
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
