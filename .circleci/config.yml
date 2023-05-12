@@ -130,7 +130,12 @@ jobs:
       # - save_cache:
       #     paths: [frontend/node_modules]
       #     key: frontend-build
-
+      # - save_cache:
+      #     paths:
+      #       - ~/project/<< parameters.path >>/package-lock.json
+      #       - ~/project/<< parameters.path >>/node_modules
+      #       - ~/project/<< parameters.path >>/package.json
+      #     key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
       - run: 
           name: clean on fail
           when: on_fail
@@ -147,10 +152,10 @@ jobs:
           path: backend
       - save_cache:
           paths:
-            - ~/project/<< parameters.path >>/package-lock.json
-            - ~/project/<< parameters.path >>/node_modules
-            - ~/project/<< parameters.path >>/package.json
-          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+            - ~/project/backend/package-lock.json
+            - ~/project/backend/node_modules
+            - ~/project/backend/package.json
+          key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
       - run: 
           name: clean on fail
           when: on_fail
@@ -210,10 +215,10 @@ jobs:
             npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
       - save_cache:
           paths:
-            - ~/project/<< parameters.path >>/package-lock.json
-            - ~/project/<< parameters.path >>/node_modules
-            - ~/project/<< parameters.path >>/package.json
-          key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+            - ~/project/frontend/package-lock.json
+            - ~/project/frontend/node_modules
+            - ~/project/frontend/package.json
+          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
 
   scan-backend:
     docker:
