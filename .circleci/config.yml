@@ -28,8 +28,8 @@ commands:
               npm install
               npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all --force && npm audit --audit-level=critical)
             else
-              #npm audit --audit-level=critical || (npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
-              npm audit --audit-level=critical || (npm update && npm upgrade && npm ci && npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
+              #npm audit --audit-level=critical || (npm update && npm upgrade  && npm ci && npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
+              npm audit --audit-level=critical || ( npm audit fix --all --audit-level=critical --force && npm audit --audit-level=critical)
             fi
       - save_cache:
           paths:
