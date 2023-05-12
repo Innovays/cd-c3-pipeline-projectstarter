@@ -33,8 +33,12 @@ commands:
             fi
       - save_cache:
           paths:
-            - node_modules
+            - ~/project/<< parameters.path >>/package-lock.json
           key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/node_modules" }}
 
   # npm-prepare:
   #   description: Update & Upgrade npm then run install and scan for vulnerabilities 
