@@ -19,9 +19,6 @@ commands:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "~/project/<< parameters.path >>/node_modules/" }}
       - run:
           name: Prepare npm
           command: |
@@ -37,11 +34,8 @@ commands:
       - save_cache:
           paths:
             - ~/project/<< parameters.path >>/package-lock.json
-          key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
-      - save_cache:
-          paths:
             - ~/project/<< parameters.path >>/node_modules
-          key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/node_modules/" }}
+          key: v1-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
 
   # npm-prepare:
   #   description: Update & Upgrade npm then run install and scan for vulnerabilities 
