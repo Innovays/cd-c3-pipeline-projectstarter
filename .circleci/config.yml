@@ -89,9 +89,7 @@ jobs:
           keys: [frontend-build]
       - run:
           name: Build front-end
-          command: |
-            npm-prepare:
-              path: frontend
+          command: npm-prepare frontend
 
       - save_cache:
           paths: [frontend/node_modules]
