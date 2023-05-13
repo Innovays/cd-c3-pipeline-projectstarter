@@ -392,6 +392,7 @@ jobs:
       - run:
           name: Send migration results to kvdb
           command: |
+            echo "yes!"
             echo ${MIGRATIONS_OUTPUT}
             if grep -q "has been executed successfully" ${MIGRATIONS_OUTPUT}; then
               curl https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=$(ACCESS_TOKEN) -d "1"
