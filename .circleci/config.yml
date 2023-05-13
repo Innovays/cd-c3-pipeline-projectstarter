@@ -134,7 +134,7 @@ jobs:
             ls -ltr
             if [ ! -d "node_modules" ]; then
               # npm update && npm upgrade
-              npm ci
+              npm install
               npm run build
             fi
       # - save_cache:
@@ -180,7 +180,7 @@ jobs:
           command: |
             cd backend
             if [ ! -d "node_modules" ]; then
-              npm update && npm upgrade &&
+              # npm update && npm upgrade &&
               npm install &&
               npm run build
             fi
