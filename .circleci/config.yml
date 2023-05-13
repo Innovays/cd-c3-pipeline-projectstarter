@@ -133,7 +133,7 @@ jobs:
             cd frontend
             ls -ltr
             if [ ! -d "node_modules" ]; then
-              #npm update && npm upgrade
+              # npm update && npm upgrade
               npm ci
               npm run build
             fi
