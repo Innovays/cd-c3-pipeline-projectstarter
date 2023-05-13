@@ -442,7 +442,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/node:13.8.0 #python:3.7-alpine3.11
+      - image: python:3.7-alpine3.11 #cimg/node:13.8.0 #
         user: root
     steps:
       - checkout
@@ -453,13 +453,14 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            # sudo apt update
-            # sudo apt install software-properties-common
-            # sudo add-apt-repository --yes --update ppa:ansible/ansible
-            #gzip curl
-            sudo apt-get update -y && sudo apt-get -y install awscli ansible
-            #apk add --update ansible 
-            #pip install awscli
+            # # sudo apt update
+            # # sudo apt install software-properties-common
+            # # sudo add-apt-repository --yes --update ppa:ansible/ansible
+            # #gzip curl
+            # sudo apt-get update -y && sudo apt-get -y install awscli ansible
+            # install the dependencies needed for your playbook
+            apk add --update ansible
+            pip install awscli    
       # - run:
       #     name: install node modules
       #     command: |
@@ -481,11 +482,11 @@ jobs:
             cd ~/project
             tar -zcvf api.tar.gz ~/project/backend/
             mv api.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-backend.tar.gz
-      - run:
-          name: add ansible config
-          command: |
-            echo "[ssh_connection]" > ansible.cfg
-            echo "scp_if_ssh=True" >> ansible.cfg
+      # - run:
+      #     name: add ansible config
+      #     command: |
+      #       echo "[ssh_connection]" > ansible.cfg
+      #       echo "scp_if_ssh=True" >> ansible.cfg
       - run:
           name: Deploy backend
           command: |
