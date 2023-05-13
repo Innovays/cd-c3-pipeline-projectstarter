@@ -131,9 +131,10 @@ jobs:
           name: build
           command: |
             cd frontend
+            ls -ltr
             if [ ! -d "node_modules" ]; then
               npm update && npm upgrade
-              npm install
+              npm ci
               npm run build
             fi
       # - save_cache:
@@ -155,7 +156,6 @@ jobs:
           command: |
            #rm ~/project/frontend/package-lock.json
            rm -r ~/project/frontend/node_modules
-           rm -r /home/circleci
 
   build-backend:
     docker:
