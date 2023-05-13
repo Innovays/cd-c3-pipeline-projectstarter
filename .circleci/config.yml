@@ -356,7 +356,7 @@ jobs:
              pip install awscli          
       # attach workspace
       - attach_workspace:
-          at: ~/project/.circleci/ansible
+          at: ~/ #project/.circleci/ansible
       - run:
           name: Configure server
           command: |
