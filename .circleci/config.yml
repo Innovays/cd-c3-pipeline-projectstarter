@@ -378,7 +378,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get update -y && apt install -y awscli
+            sudo apt-get update -y && sudo apt install -y awscli
       # - attach_workspace:
       #     at: ~/
 
@@ -410,7 +410,7 @@ jobs:
         - run:
             name: Install dependencies
             command: |
-              sudo apt-get update && sudo apt-get upgrade && apt-get -y install awscli
+              sudo apt-get update -y && sudo apt-get -y install awscli
         - attach_workspace:
             at: ~/
         - run:
