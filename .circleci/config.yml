@@ -16,8 +16,8 @@ commands:
         type: string
         default: .
     steps:
-      - attach_workspace:
-          at: ~/
+      # - attach_workspace:
+      #     at: ~/
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }}
@@ -37,12 +37,12 @@ commands:
       #       - ~/project/<< parameters.path >>/package.json
       #     key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
 
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/<< parameters.path >>/package-lock.json
-            - project/<< parameters.path >>/node_modules
-            - project/<< parameters.path >>/package.json
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/<< parameters.path >>/package-lock.json
+      #       - project/<< parameters.path >>/node_modules
+      #       - project/<< parameters.path >>/package.json
   # npm-prepare:
   #   description: Update & Upgrade npm then run install and scan for vulnerabilities 
   #   parameters: 
