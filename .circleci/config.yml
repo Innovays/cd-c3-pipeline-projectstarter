@@ -352,7 +352,7 @@ jobs:
           name: Install dependencies
           command: |
             # install the dependencies needed for your playbook
-             apk add --update ansible
+             # apk add --update ansible
              pip install awscli          
       # attach workspace
       - attach_workspace:
@@ -442,7 +442,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/python:3.10.0-node
+      - image: python:3.7-alpine3.11
         user: root
     steps:
       - checkout
@@ -453,11 +453,10 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            sudo apt update
-            sudo apt install software-properties-common
-            sudo add-apt-repository --yes --update ppa:ansible/ansible
-            sudo apt install ansible
-            sudo pip install awscli
+            # sudo apt update
+            # sudo apt install software-properties-common
+            # sudo add-apt-repository --yes --update ppa:ansible/ansible
+            pip install awscli tar gzip
       # - run:
       #     name: install node modules
       #     command: |
