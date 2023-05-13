@@ -259,7 +259,7 @@ jobs:
             - ~/project/frontend/package-lock.json
             - ~/project/frontend/node_modules
             - ~/project/frontend/package.json
-          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
       - persist_to_workspace:
           root: ~/
           paths:
