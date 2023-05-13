@@ -363,7 +363,7 @@ jobs:
             # Your code here
             cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-            # exit 1
+
       # Here's where you will add some code to rollback on failure    
       - destroy-environment
 
@@ -457,7 +457,7 @@ jobs:
             # sudo apt install software-properties-common
             # sudo add-apt-repository --yes --update ppa:ansible/ansible
             apk add --update ansible
-            pip install awscli tar gzip
+            pip install awscli tarfile gzip
       # - run:
       #     name: install node modules
       #     command: |
