@@ -173,8 +173,7 @@ jobs:
       #       - ~/project/backend/package.json
       #     key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
       - restore_cache:
-          keys: 
-            - v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
+          keys: [backend]
       # - npm-prepare:
       #     path: frontend
       - run:
@@ -288,7 +287,7 @@ jobs:
             - ~/project/backend/package-lock.json
             - ~/project/backend/node_modules
             - ~/project/backend/package.json
-          key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
+          key: backend
       - persist_to_workspace:
           root: ~/
           paths:
