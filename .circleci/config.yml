@@ -139,9 +139,9 @@ jobs:
               npm install
               npm run build
             fi
-      # - save_cache:
-      #     paths: [frontend/node_modules]
-      #     key: frontend-build
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
       # - save_cache:
       #     paths:
       #       - ~/project/frontend/package-lock.json
@@ -215,8 +215,8 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      # - restore_cache:
+      #     keys: [frontend-build]
       # - npm-prepare:
       #     path: frontend
       - attach_workspace:
@@ -281,12 +281,12 @@ jobs:
           command: |
             cd backend
             npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit fix --audit-level=critical --force && npm audit --audit-level=critical)
-      - save_cache:
-          paths:
-            - ~/project/backend/package-lock.json
-            - ~/project/backend/node_modules
-            - ~/project/backend/package.json
-          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      # - save_cache:
+      #     paths:
+      #       - ~/project/backend/package-lock.json
+      #       - ~/project/backend/node_modules
+      #       - ~/project/backend/package.json
+      #     key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
       - persist_to_workspace:
           root: ~/
           paths:
@@ -373,18 +373,21 @@ jobs:
         user: root
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
-            apt -y update && apt -y upgrade && apt -y install awscli
-      - attach_workspace:
-          at: ~/
+            pip install awscli
+      # - attach_workspace:
+      #     at: ~/
+
       # - npm-prepare:
       #     path: backend
       - run:
           name: Run migrations
           command: |
-            cd ~/project/backend
+            cd backend
             MIGRATIONS_OUTPUT=$(npm run migrations)
       - run:
           name: Send migration results to kvdb
