@@ -122,6 +122,8 @@ jobs:
       - image: cimg/node:13.8.0 # circleci/node:13.8.0
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           keys: 
             - v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
