@@ -388,6 +388,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm install
             MIGRATIONS_OUTPUT=$(npm run migrations)
       - run:
           name: Send migration results to kvdb
