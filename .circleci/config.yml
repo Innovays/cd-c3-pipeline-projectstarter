@@ -428,6 +428,7 @@ jobs:
             name: Build frontend objects
             command: |
                 cd frontend
+                npm install
                 npm run build
                 tar -czvf artifact.tar.gz dist
                 mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
@@ -456,7 +457,7 @@ jobs:
             sudo apt install software-properties-common
             sudo add-apt-repository --yes --update ppa:ansible/ansible
             sudo apt install ansible
-            pip install awscli
+            sudo pip install awscli
       # - run:
       #     name: install node modules
       #     command: |
