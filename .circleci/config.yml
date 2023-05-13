@@ -421,6 +421,7 @@ jobs:
         - run:
             name: Build frontend objects
             command: |
+                cd frontend
                 npm run build
                 tar -czvf artifact.tar.gz dist
                 mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
@@ -462,7 +463,7 @@ jobs:
       - run:
           name: build backend dist
           command: |
-            cd /root/project/backend
+            cd backend
             npm i
 
             echo ENVIROMENT=development > ".env"
