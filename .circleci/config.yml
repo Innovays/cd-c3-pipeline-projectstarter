@@ -489,8 +489,9 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            cat .circleci/ansible/inventory.txt
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            cd ~/project/.circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt --ask-pass deploy-backend.yml 
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
