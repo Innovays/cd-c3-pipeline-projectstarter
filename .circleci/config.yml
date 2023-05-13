@@ -442,7 +442,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/node:13.8.0 #python:3.7-alpine3.11
         user: root
     steps:
       - checkout
@@ -457,8 +457,9 @@ jobs:
             # sudo apt install software-properties-common
             # sudo add-apt-repository --yes --update ppa:ansible/ansible
             #gzip curl
-            apk add --update ansible 
-            pip install awscli
+            apt-get update && apt-get install -y ansible awscli
+            #apk add --update ansible 
+            #pip install awscli
       # - run:
       #     name: install node modules
       #     command: |
