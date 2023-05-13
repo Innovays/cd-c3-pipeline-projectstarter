@@ -482,8 +482,8 @@ jobs:
       - run:
           name: build zip file
           command: |
-            cd /root/project/
-            tar -zcvf api.tar.gz backend/
+            cd ~/project
+            tar -zcvf api.tar.gz ~/project/backend/
             mv api.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-backend.tar.gz
       - run:
           name: add ansible config
