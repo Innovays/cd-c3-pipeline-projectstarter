@@ -130,12 +130,12 @@ jobs:
       # - save_cache:
       #     paths: [frontend/node_modules]
       #     key: frontend-build
-      # - save_cache:
-      #     paths:
-      #       - ~/project/<< parameters.path >>/package-lock.json
-      #       - ~/project/<< parameters.path >>/node_modules
-      #       - ~/project/<< parameters.path >>/package.json
-      #     key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+      - save_cache:
+          paths:
+            - ~/project/frontend/package-lock.json
+            - ~/project/frontend/node_modules
+            - ~/project/frontend/package.json
+          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
       - run: 
           name: clean on fail
           when: on_fail
@@ -178,7 +178,7 @@ jobs:
           path: frontend
       - run:
           command: |
-            cd backend
+            cd frontend
             npm run test
                 
   test-backend:
