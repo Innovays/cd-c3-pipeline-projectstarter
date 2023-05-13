@@ -134,6 +134,7 @@ jobs:
             if [ ! -d "node_modules" ]; then
               npm update && npm upgrade
               npm install
+              npm run build
             fi
       # - save_cache:
       #     paths: [frontend/node_modules]
@@ -144,6 +145,10 @@ jobs:
       #       - ~/project/frontend/node_modules
       #       - ~/project/frontend/package.json
       #     key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/frontend
       - run: 
           name: clean on fail
           when: on_fail
@@ -183,6 +188,11 @@ jobs:
           command: |
            #rm ~/project/backend/package-lock.json
            rm -r ~/project/backend/node_modules
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend
+
 
   test-frontend:
     docker:
@@ -195,8 +205,10 @@ jobs:
       - checkout
       # - restore_cache:
       #     keys: [frontend-build]
-      - npm-prepare:
-          path: frontend
+      # - npm-prepare:
+      #     path: frontend
+      - attach_workspace:
+          at: ~/
       - run:
           command: |
             cd frontend
@@ -211,8 +223,10 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - npm-prepare:
-          path: backend
+      # - npm-prepare:
+      #     path: backend
+      - attach_workspace:
+          at: ~/
       - run:
           command: |
             cd backend
@@ -229,17 +243,23 @@ jobs:
       - checkout
       # - restore_cache:
       #     keys: [frontend-build]
-      - npm-prepare:
-          path: frontend
+      # - npm-prepare:
+      #     path: frontend
+      - attach_workspace:
+          at: ~/
       - run: 
           command: |
-            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
+            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm run build && npm audit --audit-level=critical)
       - save_cache:
           paths:
             - ~/project/frontend/package-lock.json
             - ~/project/frontend/node_modules
             - ~/project/frontend/package.json
           key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/frontend
 
   scan-backend:
     docker:
@@ -250,17 +270,21 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      - npm-prepare:
-          path: backend
+      # - npm-prepare:
+      #     path: backend
       - run: 
           command: |
-            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
+            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm run build && npm audit --audit-level=critical)
       - save_cache:
           paths:
             - ~/project/backend/package-lock.json
             - ~/project/backend/node_modules
             - ~/project/backend/package.json
           key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend
 
   deploy-infrastructure:
     docker:
@@ -346,11 +370,11 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get -y update && apt-get -y upgrade && apt -y install awscli
+            apt -y update && apt -y upgrade && apt -y install awscli
       - attach_workspace:
           at: ~/
-      - npm-prepare:
-          path: backend
+      # - npm-prepare:
+      #     path: backend
       - run:
           name: Run migrations
           command: |
@@ -388,20 +412,11 @@ jobs:
               cat ~/project/frontend/.env &&
               echo "ENVIRONMENT = production"  >> ~/project/frontend/.env &&
               echo "NODE_ENV = production" >> ~/project/frontend/.env
-        - npm-prepare:
-            path: frontend
+        # - npm-prepare:
+        #     path: frontend
         - run:
             name: Build frontend objects
             command: |
-                # cd ~/project/frontend
-                # npm update && npm upgrade
-                # npm install 
-                # echo "Installed!"
-                # npm audit fix --audit-level=critical --force
-                # echo "Fixed!"
-                # # npm audit fix --audit-level=critical --force # workaround
-                # # npm audit fix --force # workaround
-                # #npm audit --audit-level=critical # workaround
                 npm run build
                 tar -czvf artifact.tar.gz dist
                 mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
