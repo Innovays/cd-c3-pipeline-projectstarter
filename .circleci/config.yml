@@ -378,7 +378,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip install awscli
+            apt install -y awscli
       # - attach_workspace:
       #     at: ~/
 
