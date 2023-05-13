@@ -275,6 +275,8 @@ jobs:
       - checkout
       # - npm-prepare:
       #     path: backend
+      - attach_workspace:
+          at: ~/
       - run: 
           command: |
             cd backend
