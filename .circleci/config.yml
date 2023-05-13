@@ -9,39 +9,6 @@ orbs:
 
 commands:
 
-  npm-prepare:
-    description: Update & Upgrade npm then run install and scan for vulnerabilities 
-    parameters: 
-      path: 
-        type: string
-        default: .
-    steps:
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
-      - run:
-          name: Prepare npm
-          command: |
-            cd << parameters.path >>
-            if [ ! -d "node_modules" ]; then
-              npm update && npm upgrade
-              npm install
-            fi
-      # - save_cache:
-      #     paths:
-      #       - ~/project/<< parameters.path >>/package-lock.json
-      #       - ~/project/<< parameters.path >>/node_modules
-      #       - ~/project/<< parameters.path >>/package.json
-      #     key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
-
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/<< parameters.path >>/package-lock.json
-            - project/<< parameters.path >>/node_modules
-            - project/<< parameters.path >>/package.json
   # npm-prepare:
   #   description: Update & Upgrade npm then run install and scan for vulnerabilities 
   #   parameters: 
@@ -49,28 +16,61 @@ commands:
   #       type: string
   #       default: .
   #   steps:
-  #     - restore_cache:
-  #         keys:
-  #           - v1-dependencies-{{ checksum "package.json" }}
+  #     - attach_workspace:
+  #         at: ~/
+  #     # - restore_cache:
+  #     #     keys:
+  #     #       - v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
   #     - run:
   #         name: Prepare npm
   #         command: |
   #           cd << parameters.path >>
-  #           npm update && npm upgrade
-  #     - run:
-  #         name: install npm
-  #         command: |
-  #           cd << parameters.path >>
-  #           npm install
-  #     - run:
-  #         name: scan for vulnerabilities
-  #         command: |
-  #           cd << parameters.path >>
-  #           (npm audit --audit-level=critical || npm audit fix) || (npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit --audit-level=critical))
-  #     - save_cache:
+  #           if [ ! -d "node_modules" ]; then
+  #             npm update && npm upgrade
+  #             npm install
+  #           fi
+  #     # - save_cache:
+  #     #     paths:
+  #     #       - ~/project/<< parameters.path >>/package-lock.json
+  #     #       - ~/project/<< parameters.path >>/node_modules
+  #     #       - ~/project/<< parameters.path >>/package.json
+  #     #     key: v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package-lock.json" }} v2-dependencies-{{ checksum "~/project/<< parameters.path >>/package.json" }}
+
+  #     - persist_to_workspace:
+  #         root: ~/
   #         paths:
-  #           - node_modules
-  #         key: v1-dependencies-{{ checksum "package.json" }} #test
+  #           - project/<< parameters.path >>/package-lock.json
+  #           - project/<< parameters.path >>/node_modules
+  #           - project/<< parameters.path >>/package.json
+  # # npm-prepare:
+  # #   description: Update & Upgrade npm then run install and scan for vulnerabilities 
+  # #   parameters: 
+  # #     path: 
+  # #       type: string
+  # #       default: .
+  # #   steps:
+  # #     - restore_cache:
+  # #         keys:
+  # #           - v1-dependencies-{{ checksum "package.json" }}
+  # #     - run:
+  # #         name: Prepare npm
+  # #         command: |
+  # #           cd << parameters.path >>
+  # #           npm update && npm upgrade
+  # #     - run:
+  # #         name: install npm
+  # #         command: |
+  # #           cd << parameters.path >>
+  # #           npm install
+  # #     - run:
+  # #         name: scan for vulnerabilities
+  # #         command: |
+  # #           cd << parameters.path >>
+  # #           (npm audit --audit-level=critical || npm audit fix) || (npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit --audit-level=critical))
+  # #     - save_cache:
+  # #         paths:
+  # #           - node_modules
+  # #         key: v1-dependencies-{{ checksum "package.json" }} #test
     
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -122,24 +122,33 @@ jobs:
       - image: cimg/node:13.8.0 # circleci/node:13.8.0
     steps:
       - checkout
-      # - restore_cache:
-      #     keys: [frontend-build]
-      - npm-prepare:
-          path: frontend
+      - restore_cache:
+          keys: 
+            - v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      # - npm-prepare:
+      #     path: frontend
+      - run:
+          name: build
+          command: |
+            cd frontend
+            if [ ! -d "node_modules" ]; then
+              npm update && npm upgrade
+              npm install
+            fi
       # - save_cache:
       #     paths: [frontend/node_modules]
       #     key: frontend-build
-      - save_cache:
-          paths:
-            - ~/project/frontend/package-lock.json
-            - ~/project/frontend/node_modules
-            - ~/project/frontend/package.json
-          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      # - save_cache:
+      #     paths:
+      #       - ~/project/frontend/package-lock.json
+      #       - ~/project/frontend/node_modules
+      #       - ~/project/frontend/package.json
+      #     key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
       - run: 
           name: clean on fail
           when: on_fail
           command: |
-           rm ~/project/frontend/package-lock.json
+           #rm ~/project/frontend/package-lock.json
            rm -r ~/project/frontend/node_modules
 
   build-backend:
@@ -147,19 +156,32 @@ jobs:
       - image: cimg/node:13.8.0 #circleci/node:13.8.0
     steps:
       - checkout
-      - npm-prepare:
-          path: backend
-      - save_cache:
-          paths:
-            - ~/project/backend/package-lock.json
-            - ~/project/backend/node_modules
-            - ~/project/backend/package.json
-          key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
+      # - npm-prepare:
+      #     path: backend
+      # - save_cache:
+      #     paths:
+      #       - ~/project/backend/package-lock.json
+      #       - ~/project/backend/node_modules
+      #       - ~/project/backend/package.json
+      #     key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
+      - restore_cache:
+          keys: 
+            - v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
+      # - npm-prepare:
+      #     path: frontend
+      - run:
+          name: build
+          command: |
+            cd backend
+            if [ ! -d "node_modules" ]; then
+              npm update && npm upgrade
+              npm install
+            fi
       - run: 
           name: clean on fail
           when: on_fail
           command: |
-           rm ~/project/backend/package-lock.json
+           #rm ~/project/backend/package-lock.json
            rm -r ~/project/backend/node_modules
 
   test-frontend:
