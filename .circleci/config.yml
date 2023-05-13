@@ -456,8 +456,8 @@ jobs:
             # sudo apt update
             # sudo apt install software-properties-common
             # sudo add-apt-repository --yes --update ppa:ansible/ansible
-            apk add --update ansible
-            pip install awscli gzip curl
+            apk add --update ansible gzip curl
+            pip install awscli
       # - run:
       #     name: install node modules
       #     command: |
