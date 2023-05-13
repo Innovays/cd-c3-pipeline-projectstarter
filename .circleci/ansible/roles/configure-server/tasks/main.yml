@@ -4,10 +4,10 @@
   apt:
     update_cache: yes
     
-- name: "upgrade packages."
-  become: true
-  apt:
-    upgrade: "yes"
+# - name: "upgrade packages."
+#   become: true
+#   apt:
+#     upgrade: "yes"
     
 - name: "install python for Ansible."
   become: true
@@ -39,9 +39,9 @@
   shell: |
     curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs
 
-- name: remove dependencies that are no longer required
-  apt:
-    autoremove: yes
+# - name: remove dependencies that are no longer required
+#   apt:
+#     autoremove: yes
 
 
 
