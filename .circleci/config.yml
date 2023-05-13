@@ -122,11 +122,11 @@ jobs:
       - image: cimg/node:13.8.0 # circleci/node:13.8.0
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys: 
-            - v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      # - attach_workspace:
+      #     at: ~/
+      # - restore_cache:
+      #     keys: 
+      #       - v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
       # - npm-prepare:
       #     path: frontend
       - run:
@@ -172,8 +172,8 @@ jobs:
       #       - ~/project/backend/node_modules
       #       - ~/project/backend/package.json
       #     key: v2-dependencies-{{ checksum "~/project/backend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/backend/package.json" }}
-      - restore_cache:
-          keys: [backend]
+      # - restore_cache:
+      #     keys: [backend]
       # - npm-prepare:
       #     path: frontend
       - run:
@@ -191,6 +191,15 @@ jobs:
           command: |
            #rm ~/project/backend/package-lock.json
            rm -r ~/project/backend/node_modules
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+      # - save_cache:
+      #     paths:
+      #       - ~/project/backend/package-lock.json
+      #       - ~/project/backend/node_modules
+      #       - ~/project/backend/package.json
+      #     key: backend
       - persist_to_workspace:
           root: ~/
           paths:
@@ -206,8 +215,8 @@ jobs:
       # Restore from cache
       # Your job code here
       - checkout
-      # - restore_cache:
-      #     keys: [frontend-build]
+      - restore_cache:
+          keys: [frontend-build]
       # - npm-prepare:
       #     path: frontend
       - attach_workspace:
@@ -254,16 +263,6 @@ jobs:
           command: |
             cd frontend
             npm audit --audit-level=critical || (npm audit fix --audit-level=critical --force && npm audit fix --audit-level=critical --force && npm audit --audit-level=critical)
-      - save_cache:
-          paths:
-            - ~/project/frontend/package-lock.json
-            - ~/project/frontend/node_modules
-            - ~/project/frontend/package.json
-          key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/frontend
 
   scan-backend:
     docker:
