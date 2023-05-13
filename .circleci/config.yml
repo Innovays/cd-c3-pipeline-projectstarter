@@ -378,7 +378,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt install -y awscli
+            apt-get update -y && apt install -y awscli
       # - attach_workspace:
       #     at: ~/
 
@@ -392,7 +392,6 @@ jobs:
       - run:
           name: Send migration results to kvdb
           command: |
-            echo "yes!"
             echo ${MIGRATIONS_OUTPUT}
             if grep -q "has been executed successfully" ${MIGRATIONS_OUTPUT}; then
               curl https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=$(ACCESS_TOKEN) -d "1"
@@ -501,6 +500,19 @@ jobs:
           command: |
             cat .circleci/ansible/inventory.txt
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+      # - save_cache:
+      #     paths:
+      #       - ~/project/frontend/package-lock.json
+      #       - ~/project/frontend/node_modules
+      #       - ~/project/frontend/package.json
+      #     key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }} v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/backend
       - destroy-environment
       - revert-migrations
 
