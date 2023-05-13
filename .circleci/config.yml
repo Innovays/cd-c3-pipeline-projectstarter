@@ -487,7 +487,7 @@ jobs:
       #     name: add ansible config
       #     command: |
       #       echo "[ssh_connection]" > ansible.cfg
-      #       echo "scp_if_ssh=True" >> ansible.cfg
+      #       echo "scp_if_ssh=True" >> ansible.cfg #
       - run:
           name: Deploy backend
           command: |
