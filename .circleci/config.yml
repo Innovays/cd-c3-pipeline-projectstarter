@@ -443,7 +443,7 @@ jobs:
   deploy-backend:
     docker:
       - image: cimg/node:13.8.0 #python:3.7-alpine3.11
-        #user: root
+        user: root
     steps:
       - checkout
       - add_ssh_keys:
@@ -457,7 +457,7 @@ jobs:
             # sudo apt install software-properties-common
             # sudo add-apt-repository --yes --update ppa:ansible/ansible
             #gzip curl
-            apt-get update && apt-get install -y ansible awscli
+            sudo apt-get update -y && sudo apt-get -y install awscli
             #apk add --update ansible 
             #pip install awscli
       # - run:
