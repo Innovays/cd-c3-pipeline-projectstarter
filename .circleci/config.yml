@@ -457,7 +457,7 @@ jobs:
             # sudo apt install software-properties-common
             # sudo add-apt-repository --yes --update ppa:ansible/ansible
             #gzip curl
-            sudo apt-get update -y && sudo apt-get -y install awscli
+            sudo apt-get update -y && sudo apt-get -y install awscli ansible
             #apk add --update ansible 
             #pip install awscli
       # - run:
