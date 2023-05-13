@@ -1,4 +1,6 @@
-- name: Configuring of new created EC2 instances
+---
+
+- name: "Configuring of new created EC2 instances"
   hosts: web
   user: ubuntu
   become: true
