@@ -252,7 +252,7 @@ jobs:
       - run: 
           command: |
             cd frontend
-            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm run build && npm audit --audit-level=critical)
+            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
       - save_cache:
           paths:
             - ~/project/frontend/package-lock.json
@@ -278,7 +278,7 @@ jobs:
       - run: 
           command: |
             cd backend
-            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm run build && npm audit --audit-level=critical)
+            npm audit --audit-level=critical || (npm audit fix --audit-level=critical --all && npm audit --audit-level=critical)
       - save_cache:
           paths:
             - ~/project/backend/package-lock.json
