@@ -45,7 +45,7 @@
     cd /home/ubuntu/backend
     sudo npm install
     sudo npm run build
-    sudo npm run start:prod
+    sudo npm run start:dev
     cd dist
     pm2 stop default
     sudo pm2 start npm --name udapeople -- start
