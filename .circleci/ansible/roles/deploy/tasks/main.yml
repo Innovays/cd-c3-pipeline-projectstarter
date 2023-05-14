@@ -39,10 +39,23 @@
   unarchive:
     src: artifact-backend.tar.gz
     dest: /home/ubuntu/
-
+    
 - name: "executing node"
   shell: |
-    cd /home/ubuntu/backend/dist
+    cd /home/ubuntu/backend
+    sudo npm install
+    sudo npm run build
+    cd dist
     pm2 stop default
-    pm2 start npm --name 'udapeople' -- start
+    sudo pm2 start npm --name udapeople -- start
     pm2 ls
+
+# - name: "executing node"
+#   shell: |
+#     cd /home/ubuntu/backend
+# #    pm2 stop default
+# #    pm2 start npm --name 'udapeople' -- start
+# #    pm2 ls
+#     sudo npm install
+#     sudo npm run build
+#     sudo pm2 start npm --name backend -- start
