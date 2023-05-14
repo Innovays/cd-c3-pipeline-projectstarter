@@ -287,10 +287,10 @@ jobs:
       #       - ~/project/backend/node_modules
       #       - ~/project/backend/package.json
       #     key: v2-dependencies-{{ checksum "~/project/frontend/package-lock.json" }}-v2-dependencies-{{ checksum "~/project/frontend/package.json" }}
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/backend
 
   deploy-infrastructure:
     docker:
@@ -474,12 +474,12 @@ jobs:
       #       ## If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
       #       #npm audit fix --force
       #       #npm audit --audit-level=critical
-      # - run:
-      #     name: build backend dist
-      #     command: |
-      #       cd backend
-      #       npm install
-      #       npm run build
+      - run:
+          name: build backend dist
+          command: |
+            cd backend
+            npm install
+            npm run build
       - run:
           name: build zip file
           command: |
