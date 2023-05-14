@@ -42,7 +42,7 @@
     
 - name: "executing node"
   shell: |
-    cd /home/ubuntu/backend
+    cd /home/ubuntu/root/project/backend
     sudo npm install
     sudo npm run build
     pm2 stop default
