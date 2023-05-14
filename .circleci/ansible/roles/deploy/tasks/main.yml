@@ -43,11 +43,8 @@
 - name: "executing node"
   shell: |
     cd /home/ubuntu/project/backend
-    sudo npm install
-    sudo npm run build
     pm2 stop default
     sudo pm2 start npm --name udapeople -- start
-    pm2 ls
 
 # - name: "executing node"
 #   shell: |
