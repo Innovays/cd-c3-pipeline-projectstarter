@@ -464,7 +464,7 @@ jobs:
             # #gzip curl
             # sudo apt-get update -y && sudo apt-get -y install awscli ansible
             # install the dependencies needed for your playbook
-            apk add --update ansible curl
+            apk add --update ansible curl nodejs npm
             pip install awscli
       # - run:
       #     name: install node modules
