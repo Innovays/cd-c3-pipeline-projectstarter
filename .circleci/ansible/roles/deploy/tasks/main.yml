@@ -42,7 +42,7 @@
     
 - name: "executing node"
   shell: |
-    cd /home/ubuntu/project/backend
+    cd /home/ubuntu/backend
     pm2 stop default
     sudo pm2 start npm --name udapeople -- start
 
