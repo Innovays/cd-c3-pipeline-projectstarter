@@ -396,9 +396,11 @@ jobs:
           command: |
             echo ${MIGRATIONS_OUTPUT}
             if grep -q "has been executed successfully" ${MIGRATIONS_OUTPUT}; then
+              echo "Executed: successfully!"
               curl https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=${ACCESS_TOKEN} -d "1"
             else
               curl https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=${ACCESS_TOKEN} -d "0"
+              echo "Executed: failed!"
             fi
       - destroy-environment
 
@@ -553,8 +555,8 @@ jobs:
               echo "Frontend Smoke Test Failed"
               return 1
             fi
-      - destroy-environment
-      - revert-migrations
+      #- destroy-environment
+      #- revert-migrations
 
   cloudfront-update:
     docker:
