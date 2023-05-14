@@ -579,8 +579,8 @@ jobs:
               echo "Frontend Smoke Test Failed"
               return 1
             fi
-      #- destroy-environment #temporary
-      #- revert-migrations #temporary
+      - destroy-environment
+      - revert-migrations
 
   cloudfront-update:
     docker:
@@ -592,7 +592,7 @@ jobs:
           command: |
             aws cloudformation update-stack \
               --use-previous-template \
-              --stack-name udapeople-cloudfront \
+              --stack-name InitialStack \
               --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false
       - destroy-environment
       - revert-migrations
