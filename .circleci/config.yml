@@ -513,11 +513,11 @@ jobs:
           command: |
             cd ~/project/.circleci/ansible
             cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml 
+            ansible-playbook -i inventory.txt deploy-backend.yml --log-file ansible.log
           environment:
-            ANSIBLE_LOG_PATH: ansible.log
+            ANSIBLE_LOG_PATH: ~/project/.circleci/ansible/ansible.log
       - store_artifacts:
-          path: ansible.log
+          path: ~/project/.circleci/ansible/ansible.log
       # - save_cache:
       #     paths: [backend/node_modules]
       #     key: backend-build #temporary 
