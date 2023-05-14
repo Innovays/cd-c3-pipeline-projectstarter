@@ -371,7 +371,7 @@ jobs:
   run-migrations:
     docker:
       - image: cimg/node:13.8.0 #circleci/node:latest
-        user: root
+        #user: root
     steps:
       - checkout
       - restore_cache:
