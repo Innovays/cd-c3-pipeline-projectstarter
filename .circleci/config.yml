@@ -514,6 +514,7 @@ jobs:
             cd ~/project/.circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml --log-file ansible.log
+            cat ansible.log
           environment:
             ANSIBLE_LOG_PATH: ~/project/.circleci/ansible/ansible.log
       - store_artifacts:
