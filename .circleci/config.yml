@@ -404,14 +404,16 @@ jobs:
 
   deploy-frontend:
       docker:
-        - image: cimg/node:13.8.0
-          user: root
+        - image: python:3.7-alpine3.11 #cimg/node:13.8.0
+          #user: root
       steps:
         - checkout
         - run:
             name: Install dependencies
             command: |
-              sudo apt-get update -y && sudo apt-get -y install awscli
+              #sudo apt-get update -y && sudo apt-get -y install awscli
+              apk add --update ansible curl
+              pip install awscli
         - attach_workspace:
             at: ~/
         - run:
@@ -429,6 +431,7 @@ jobs:
             name: Build frontend objects
             command: |
                 cd frontend
+                cat .env
                 npm install
                 npm run build
                 tar -czvf artifact.tar.gz dist
