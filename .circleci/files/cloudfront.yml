@@ -20,7 +20,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName: udapeople-hdsfheiuwskjdhue.s3.amazonaws.com
+          - DomainName: udapeople-${WorkflowID}.s3.amazonaws.com
             Id: webpage
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
