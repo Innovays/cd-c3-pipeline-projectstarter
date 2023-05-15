@@ -8,6 +8,7 @@ Parameters:
   PrivateDnsName:
     Description: Private DNS Name of the EC2 instance
     Type: String
+    default: 
 
 
 Resources:
@@ -23,7 +24,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName: !Ref PrivateDnsName
+          - DomainName: udapeople-hdsfheiuwskjdhue
             Id: webpage
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
