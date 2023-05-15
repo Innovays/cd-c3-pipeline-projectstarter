@@ -8,7 +8,6 @@ Parameters:
   PrivateDnsName:
     Description: Private DNS Name of the EC2 instance
     Type: String
-    default: udapeople-hdsfheiuwskjdhue
 
 
 Resources:
