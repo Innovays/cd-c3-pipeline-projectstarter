@@ -601,7 +601,7 @@ jobs:
               --use-previous-template \
               --stack-name InitialStack \
               --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false \
-                          ParameterKey=PrivateDnsName,ParameterValue=${private_dns}
+                          ParameterKey=PrivateDnsName,ParameterValue=$private_dns
       - destroy-environment
       - revert-migrations
 
