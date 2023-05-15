@@ -600,8 +600,8 @@ jobs:
             aws cloudformation update-stack \
               --use-previous-template \
               --stack-name InitialStack \
-              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false \
-                          ParameterKey=PrivateDnsName,ParameterValue=$private_dns
+              --parameter-overrides WorkflowID=${CIRCLE_WORKFLOW_ID:0:7} UsePreviousValue=false \
+                          PrivateDnsName=$private_dns
       - destroy-environment
       - revert-migrations
 
