@@ -590,15 +590,15 @@ jobs:
       - run:
           name: Get EC2 instances
           command: |
-            instances=$(aws ec2 describe-instances --query 'Reservations[].Instances[].{InstanceId:InstanceId, PrivateDnsName:PrivateDnsName}' --output json)
-            echo "EC2_INSTANCES=$instances" >> $BASH_ENV
+            export INSTANCES=$(aws ec2 describe-instances --query 'Reservations[].Instances[].{InstanceId:InstanceId, PrivateDnsName:PrivateDnsName}' --output json)
+            echo $INSTANCES
       - run:
           name: Update cloudfront distribution
           command: |
             aws cloudformation update-stack \
               --use-previous-template \
               --stack-name InitialStack \
-              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false, \
+              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false \
                           ParameterKey=EC2Instances,ParameterValue=${EC2_INSTANCES}
       - destroy-environment
       - revert-migrations
