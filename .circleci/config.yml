@@ -598,7 +598,7 @@ jobs:
             aws cloudformation update-stack \
               --use-previous-template \
               --stack-name InitialStack \
-              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false \
+              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false, \
                           ParameterKey=EC2Instances,ParameterValue=${EC2_INSTANCES}
       - destroy-environment
       - revert-migrations
