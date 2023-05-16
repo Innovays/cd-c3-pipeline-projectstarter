@@ -431,7 +431,7 @@ jobs:
             name: Build frontend objects
             command: |
                 cd frontend
-                # cat .env
+                cat .env
                 npm install
                 npm run build
                 tar -czvf artifact.tar.gz dist
