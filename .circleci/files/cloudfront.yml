@@ -27,6 +27,14 @@ Resources:
         Enabled: True
         DefaultRootObject: index.html
         DefaultCacheBehavior:
+          AllowedMethods: #temporary for testing reasons..
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+            - POST
+            - PATCH
+            - DELETE
           ForwardedValues:
             QueryString: False
           TargetOriginId: webpage
