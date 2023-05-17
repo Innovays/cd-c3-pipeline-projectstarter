@@ -98,6 +98,7 @@ commands:
             # Your code here
             echo "Destroy environment: << parameters.workflow_id >> "
             aws s3 rm s3://<< parameters.repository >> --recursive
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
@@ -445,7 +446,7 @@ jobs:
                 npm run build
                 tar -czvf artifact.tar.gz dist
                 mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
-                aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+                # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
         - run:
             name: Deploy frontend objects
             command: |
@@ -634,7 +635,8 @@ jobs:
             echo THIS IS THE OldWorkflowID: "${OldWorkflowID}"
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              aws s3 rb s3://udapeople-* --force --exclude s3://udapeople-hdsfheiuwskjdhue
+              aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
+              aws s3 rb s3://udapeople-${OldWorkflowID} --force
               aws cloudformation delete-stack --stack-name udapeople-frontend-${OldWorkflowID}
               aws cloudformation delete-stack --stack-name udapeople-backend-${OldWorkflowID}
             fi
