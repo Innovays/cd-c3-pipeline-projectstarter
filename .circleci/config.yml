@@ -570,7 +570,7 @@ jobs:
               echo "Backend Smoke Test Success"
               exit 0
             else
-              echo "Backend Smoke Test Failed"
+              echo "Backend Smoke Test Failed" 
               exit 1
             fi
       - run:
