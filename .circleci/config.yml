@@ -87,16 +87,21 @@ commands:
         default: udapeople-hdsfheiuwskjdhue
     steps:
       - run:
+          name: install dependencies
+          when: << parameters.event >>
+          command: |
+            pip install awscli || (apt-get -y update && apt-get -y install awscli  
+      - run:
           name: Destroy environments
           when: << parameters.event >> # << parameters.workflow_id >> #
           command: |
             # Your code here
             echo "Destroy environment: << parameters.workflow_id >> "
             aws s3 rm s3://<< parameters.repository >> --recursive
-            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
-            rm ~/project/.circleci/ansible/inventory.txt
+            #rm ~/project/.circleci/ansible/inventory.txt
             #rm ~/project/frontend/package-lock.json  
             #rm ~/project/backend/package-lock.json  
 
@@ -322,7 +327,7 @@ jobs:
                   --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
                   --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                   --tags project=udapeople 
-              exit 1
+              #exit 1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -354,7 +359,7 @@ jobs:
           command: |
             # install the dependencies needed for your playbook
              apk add --update ansible
-             pip install awscli          
+            #  pip install awscli          #test
       # attach workspace
       - attach_workspace:
           at: ~/ #project/.circleci/ansible
@@ -378,10 +383,10 @@ jobs:
 
       # - restore_cache:
       #     keys: [backend-build]
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update -y && sudo apt install -y awscli
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       sudo apt-get update -y && sudo apt install -y awscli #test
       - attach_workspace:
           at: ~/
 
@@ -405,6 +410,7 @@ jobs:
               echo "Executed: failed! https://kvdb.io/7zG47ZiNxLmoZJKhd1JPyc/migration_${CIRCLE_WORKFLOW_ID:0:7}?access_token=${ACCESS_TOKEN}"
             fi
       - destroy-environment
+      - revert-migrations
 
   deploy-frontend:
       docker:
@@ -443,7 +449,8 @@ jobs:
         - run:
             name: Deploy frontend objects
             command: |
-              aws s3 sync frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
+                aws s3 cp frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+              # aws s3 sync frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
         - destroy-environment
         - revert-migrations
 
@@ -467,7 +474,7 @@ jobs:
             # sudo apt-get update -y && sudo apt-get -y install awscli ansible
             # install the dependencies needed for your playbook
             apk add --update ansible curl nodejs npm
-            pip install awscli
+            # pip install awscli #test
       # - run:
       #     name: install node modules
       #     command: |
@@ -550,7 +557,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl
-            pip install awscli
+            # pip install awscli #test
       - run:
           name: Backend smoke test.
           command: |
