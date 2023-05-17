@@ -634,8 +634,7 @@ jobs:
             echo THIS IS THE OldWorkflowID: "${OldWorkflowID}"
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              aws s3 rb s3://udapeople-${OldWorkflowID} --force
-              aws s3 rb s3://udapeople-* --recursive --force --exclude s3://udapeople-hdsfheiuwskjdhue
+              aws s3 rb s3://udapeople-* --force --exclude s3://udapeople-hdsfheiuwskjdhue
               aws cloudformation delete-stack --stack-name udapeople-frontend-${OldWorkflowID}
               aws cloudformation delete-stack --stack-name udapeople-backend-${OldWorkflowID}
             fi
