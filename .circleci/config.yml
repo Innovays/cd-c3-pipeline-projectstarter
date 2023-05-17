@@ -451,11 +451,11 @@ jobs:
                 tar -czvf artifact.tar.gz dist
                 mv artifact.tar.gz ~/project/.circleci/ansible/roles/deploy/files/artifact-frontend-${CIRCLE_WORKFLOW_ID:0:7}.tar.gz
                 # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-        # - run:
-        #     name: Deploy frontend objects
-        #     command: |
-        #         aws s3 cp frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-        #       # aws s3 sync frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
+        - run:
+            name: Deploy frontend objects
+            command: |
+                aws s3 cp frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+              # aws s3 sync frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
         - destroy-environment
         - revert-migrations
 
