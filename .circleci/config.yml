@@ -302,7 +302,7 @@ jobs:
       - run: # 5. 1.a. Create the Infrastructure - install tar and gzip
           name: install dependencies # gzip and tar
           command: |
-              yum update
+              yum -y update
               yum -y install tar gzip
       - run:
           name: Ensure back-end infrastructure exists
