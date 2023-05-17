@@ -90,7 +90,7 @@ commands:
           name: install dependencies
           when: << parameters.event >>
           command: |
-            pip install awscli || (apt-get -y update && apt-get -y install awscli  
+            pip install awscli || (apt-get -y update && apt-get -y install awscli)
       - run:
           name: Destroy environments
           when: << parameters.event >> # << parameters.workflow_id >> #
